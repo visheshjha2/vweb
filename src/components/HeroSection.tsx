@@ -26,7 +26,7 @@ const HeroSection = () => {
         <motion.div
           className="absolute bottom-1/4 left-1/3 w-[400px] h-[400px] rounded-full opacity-20"
           style={{
-            background: "radial-gradient(circle, hsl(var(--cyber-purple) / 0.3) 0%, transparent 70%)",
+            background: "radial-gradient(circle, hsl(var(--sun-orange) / 0.3) 0%, transparent 70%)",
           }}
           animate={{
             scale: [1.2, 1, 1.2],
