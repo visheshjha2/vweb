@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-image.png";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const HeroSection = () => {
   return (
@@ -107,12 +109,14 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
               >
-                <Button variant="hero" size="xl">
-                  Start Your Project
-                  <ArrowRight className="w-5 h-5" />
+                <Button variant="hero" size="xl" asChild>
+                  <Link to="/contact">
+                    Start Your Project
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
                 </Button>
-                <Button variant="heroOutline" size="xl">
-                  View Portfolio
+                <Button variant="heroOutline" size="xl" asChild>
+                  <Link to="/projects">View Portfolio</Link>
                 </Button>
               </motion.div>
 

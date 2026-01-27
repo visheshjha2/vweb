@@ -1,27 +1,27 @@
-import { motion } from "framer-motion";
-import { Code, Palette, Zap, Users } from "lucide-react";
+import { Mail, Shield, Server, Search, Zap, Users } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const skills = [
-  { name: "React/Next.js", level: 95 },
-  { name: "TypeScript", level: 90 },
-  { name: "Node.js", level: 85 },
-  { name: "UI/UX Design", level: 88 },
-  { name: "Tailwind CSS", level: 95 },
+  { name: "SMTP", level: 95 },
+  { name: "SEO Optimization", level: 90 },
+  { name: "API Integration", level: 85 },
+  { name: "Hosting", level: 88 },
+  { name: "Authentication System", level: 95 },
   { name: "Database Design", level: 80 },
 ];
 
 const values = [
   {
-    icon: Code,
-    title: "Clean Code",
-    description: "Writing maintainable, scalable code that stands the test of time.",
+    icon: Mail,
+    title: "SMTP Integration",
+    description: "Reliable email delivery systems for your applications.",
   },
   {
-    icon: Palette,
-    title: "Creative Design",
-    description: "Blending aesthetics with functionality for memorable experiences.",
+    icon: Search,
+    title: "SEO Optimized",
+    description: "Ensuring your website ranks high on search engines.",
   },
   {
     icon: Zap,
@@ -52,37 +52,26 @@ const About = () => {
         </div>
 
         <div className="container mx-auto px-6 lg:px-8 relative z-10">
-          <motion.div
-            className="max-w-3xl"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <ScrollReveal>
             <span className="text-primary font-medium text-sm tracking-wider uppercase">About Me</span>
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-6">
               Passionate Developer &{" "}
               <span className="text-gradient-accent">Designer</span>
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
               I'm Vishesh Jha, a full-stack developer and designer with a passion for creating 
               beautiful, functional digital experiences. With years of experience in web development, 
               I bring ideas to life through clean code and stunning visuals.
             </p>
-          </motion.div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Skills Section */}
       <section className="py-20 relative">
         <div className="container mx-auto px-6 lg:px-8">
-          <motion.div
-            className="grid lg:grid-cols-2 gap-16 items-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <div>
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <ScrollReveal>
               <h2 className="font-display text-3xl md:text-4xl font-bold mb-6">
                 Skills & Expertise
               </h2>
@@ -93,50 +82,36 @@ const About = () => {
               
               <div className="space-y-6">
                 {skills.map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
+                  <ScrollReveal key={skill.name} delay={index * 0.1}>
                     <div className="flex justify-between mb-2">
                       <span className="text-foreground font-medium">{skill.name}</span>
                       <span className="text-primary">{skill.level}%</span>
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <motion.div
-                        className="h-full bg-gradient-to-r from-primary to-sun-orange rounded-full"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.3 + index * 0.1 }}
+                      <div
+                        className="h-full bg-gradient-to-r from-primary to-sun-orange rounded-full transition-all duration-1000"
+                        style={{ width: `${skill.level}%` }}
                       />
                     </div>
-                  </motion.div>
+                  </ScrollReveal>
                 ))}
               </div>
-            </div>
+            </ScrollReveal>
 
             <div className="grid grid-cols-2 gap-6">
               {values.map((value, index) => (
-                <motion.div
-                  key={value.title}
-                  className="glass-card p-6 group hover:border-primary/50 transition-all duration-300"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                    <value.icon className="w-6 h-6 text-primary" />
+                <ScrollReveal key={value.title} delay={index * 0.1}>
+                  <div className="glass-card p-6 group hover:border-primary/50 transition-all duration-300 h-full">
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                      <value.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <h3 className="font-display font-semibold text-foreground mb-2">{value.title}</h3>
+                    <p className="text-sm text-muted-foreground">{value.description}</p>
                   </div>
-                  <h3 className="font-display font-semibold text-foreground mb-2">{value.title}</h3>
-                  <p className="text-sm text-muted-foreground">{value.description}</p>
-                </motion.div>
+                </ScrollReveal>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Github, ExternalLink } from "lucide-react";
+import { Github } from "lucide-react";
+import DevpostIcon from "./DevpostIcon";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -7,13 +8,13 @@ const Footer = () => {
   const socialLinks = [
     {
       name: "GitHub",
-      url: "https://github.com",
+      url: "https://www.github.com/visheshjha2",
       icon: Github,
     },
     {
       name: "Devpost",
-      url: "https://devpost.com",
-      icon: ExternalLink,
+      url: "https://www.devpost.com/visheshjha2",
+      icon: DevpostIcon,
     },
   ];
 

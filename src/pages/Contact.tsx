@@ -1,66 +1,97 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Mail, MapPin, Send, Github, ExternalLink } from "lucide-react";
+import { Mail, MapPin, Send, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
+import DevpostIcon from "@/components/DevpostIcon";
+import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  message: z.string().trim().min(1, "Message is required").max(1000, "Message must be less than 1000 characters"),
+});
+
+const contactInfo = [
+  {
+    icon: Mail,
+    title: "Email",
+    value: "visheshjha2@gmail.com",
+    href: "mailto:visheshjha2@gmail.com",
+  },
+  {
+    icon: MapPin,
+    title: "Location",
+    value: "Available Worldwide",
+    href: null,
+  },
+];
+
+const socialLinks = [
+  {
+    name: "GitHub",
+    url: "https://www.github.com/visheshjha2",
+    icon: Github,
+  },
+  {
+    name: "Devpost",
+    url: "https://www.devpost.com/visheshjha2",
+    icon: DevpostIcon,
+  },
+];
 
 const Contact = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for reaching out. I'll get back to you soon!",
+    
+    const result = contactSchema.safeParse(formData);
+    if (!result.success) {
+      toast({
+        title: "Validation Error",
+        description: result.error.errors[0].message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    const { error } = await supabase.from('contact_messages').insert({
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      message: formData.message.trim(),
     });
-    setFormData({ name: "", email: "", subject: "", message: "" });
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for reaching out. I'll get back to you soon.",
+      });
+      setFormData({ name: "", email: "", message: "" });
+    }
+
+    setLoading(false);
   };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const contactInfo = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: "hello@vweb.dev",
-      href: "mailto:hello@vweb.dev",
-    },
-    {
-      icon: MapPin,
-      label: "Location",
-      value: "Available Worldwide",
-      href: null,
-    },
-  ];
-
-  const socialLinks = [
-    {
-      name: "GitHub",
-      url: "https://github.com",
-      icon: Github,
-    },
-    {
-      name: "Devpost",
-      url: "https://devpost.com",
-      icon: ExternalLink,
-    },
-  ];
 
   return (
     <main className="bg-background min-h-screen sunlight-effect">
@@ -70,7 +101,7 @@ const Contact = () => {
       <section className="pt-32 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div 
-            className="absolute top-20 right-1/4 w-[500px] h-[500px] rounded-full opacity-20"
+            className="absolute top-20 left-1/3 w-[500px] h-[500px] rounded-full opacity-15"
             style={{
               background: "radial-gradient(circle, hsl(var(--primary) / 0.4) 0%, transparent 70%)",
             }}
@@ -78,161 +109,132 @@ const Contact = () => {
         </div>
 
         <div className="container mx-auto px-6 lg:px-8 relative z-10">
-          <motion.div
-            className="text-center max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="text-primary font-medium text-sm tracking-wider uppercase">Contact</span>
+          <ScrollReveal className="text-center max-w-3xl mx-auto">
+            <span className="text-primary font-medium text-sm tracking-wider uppercase">Get in Touch</span>
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-6">
               Let's Work{" "}
               <span className="text-gradient-accent">Together</span>
             </h1>
             <p className="text-lg text-muted-foreground">
-              Have a project in mind? Let's discuss how we can bring your vision to life.
+              Have a project in mind? I'd love to hear about it. Send me a message 
+              and let's create something amazing together.
             </p>
-          </motion.div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* Contact Form Section */}
+      {/* Contact Section */}
       <section className="pb-20">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
-            {/* Contact Info */}
-            <motion.div
-              className="space-y-8"
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <div>
-                <h2 className="font-display text-2xl font-bold mb-4">Get in Touch</h2>
-                <p className="text-muted-foreground">
-                  I'm always open to discussing new projects, creative ideas, 
-                  or opportunities to be part of your vision.
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                {contactInfo.map((info) => (
-                  <div key={info.label} className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-lg glass-subtle flex items-center justify-center">
-                      <info.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">{info.label}</p>
-                      {info.href ? (
-                        <a href={info.href} className="text-foreground hover:text-primary transition-colors">
-                          {info.value}
-                        </a>
-                      ) : (
-                        <p className="text-foreground">{info.value}</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Social Links */}
-              <div>
-                <h3 className="font-display font-semibold mb-4">Follow Me</h3>
-                <div className="flex gap-4">
-                  {socialLinks.map((social) => (
-                    <a
-                      key={social.name}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-lg glass-subtle flex items-center justify-center hover:border-primary/50 hover:text-primary transition-all duration-300"
-                    >
-                      <social.icon className="w-5 h-5" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
             {/* Contact Form */}
-            <motion.div
-              className="glass-card p-8"
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm text-foreground font-medium">
-                      Name
-                    </label>
+            <ScrollReveal>
+              <form onSubmit={handleSubmit} className="glass-card p-8">
+                <h2 className="font-display text-2xl font-bold text-foreground mb-6">Send a Message</h2>
+                
+                <div className="space-y-6">
+                  <div>
+                    <Label htmlFor="name">Name</Label>
                     <Input
                       id="name"
-                      name="name"
                       value={formData.name}
-                      onChange={handleChange}
-                      placeholder="John Doe"
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="mt-2 bg-background/50 border-border/50 focus:border-primary"
+                      placeholder="Your name"
                       required
-                      className="bg-muted/50 border-border/50 focus:border-primary"
+                      maxLength={100}
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm text-foreground font-medium">
-                      Email
-                    </label>
+                  
+                  <div>
+                    <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
-                      name="email"
                       type="email"
                       value={formData.email}
-                      onChange={handleChange}
-                      placeholder="john@example.com"
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="mt-2 bg-background/50 border-border/50 focus:border-primary"
+                      placeholder="your@email.com"
                       required
-                      className="bg-muted/50 border-border/50 focus:border-primary"
+                      maxLength={255}
                     />
                   </div>
-                </div>
+                  
+                  <div>
+                    <Label htmlFor="message">Message</Label>
+                    <Textarea
+                      id="message"
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="mt-2 min-h-[150px] bg-background/50 border-border/50 focus:border-primary"
+                      placeholder="Tell me about your project..."
+                      required
+                      maxLength={1000}
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="subject" className="text-sm text-foreground font-medium">
-                    Subject
-                  </label>
-                  <Input
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    placeholder="Project Inquiry"
-                    required
-                    className="bg-muted/50 border-border/50 focus:border-primary"
-                  />
+                  <Button type="submit" variant="hero" className="w-full" disabled={loading}>
+                    {loading ? "Sending..." : (
+                      <>
+                        Send Message
+                        <Send className="w-4 h-4 ml-2" />
+                      </>
+                    )}
+                  </Button>
                 </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm text-foreground font-medium">
-                    Message
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Tell me about your project..."
-                    required
-                    rows={5}
-                    className="bg-muted/50 border-border/50 focus:border-primary resize-none"
-                  />
-                </div>
-
-                <Button type="submit" variant="hero" size="xl" className="w-full">
-                  Send Message
-                  <Send className="w-5 h-5" />
-                </Button>
               </form>
-            </motion.div>
+            </ScrollReveal>
+
+            {/* Contact Info */}
+            <div className="space-y-8">
+              <ScrollReveal delay={0.1}>
+                <div className="glass-card p-8">
+                  <h2 className="font-display text-2xl font-bold text-foreground mb-6">Contact Info</h2>
+                  <div className="space-y-6">
+                    {contactInfo.map((info) => (
+                      <div key={info.title} className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <info.icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-foreground">{info.title}</h3>
+                          {info.href ? (
+                            <a 
+                              href={info.href}
+                              className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                            >
+                              {info.value}
+                            </a>
+                          ) : (
+                            <p className="text-muted-foreground">{info.value}</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={0.2}>
+                <div className="glass-card p-8">
+                  <h2 className="font-display text-2xl font-bold text-foreground mb-6">Follow Me</h2>
+                  <div className="flex gap-4">
+                    {socialLinks.map((social) => (
+                      <a
+                        key={social.name}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-12 h-12 rounded-lg glass-subtle flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group"
+                        title={social.name}
+                      >
+                        <social.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
           </div>
         </div>
       </section>
