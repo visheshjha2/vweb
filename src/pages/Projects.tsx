@@ -1,61 +1,73 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
+import { supabase } from "@/integrations/supabase/client";
 
-const projects = [
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  image_url: string | null;
+  live_url: string | null;
+  github_url: string | null;
+}
+
+const defaultProjects = [
   {
+    id: "1",
     title: "SaaS Dashboard",
     description: "A comprehensive analytics dashboard with real-time data visualization and user management.",
     tags: ["React", "TypeScript", "Tailwind", "Chart.js"],
-    image: "/placeholder.svg",
-    liveUrl: "#",
-    githubUrl: "#",
+    image_url: "/placeholder.svg",
+    live_url: "#",
+    github_url: "#",
   },
   {
+    id: "2",
     title: "E-Commerce Platform",
     description: "Full-stack e-commerce solution with payment integration and inventory management.",
     tags: ["Next.js", "Node.js", "PostgreSQL", "Stripe"],
-    image: "/placeholder.svg",
-    liveUrl: "#",
-    githubUrl: "#",
+    image_url: "/placeholder.svg",
+    live_url: "#",
+    github_url: "#",
   },
   {
+    id: "3",
     title: "Portfolio Website",
     description: "Modern portfolio website with smooth animations and glassmorphism design.",
     tags: ["React", "Framer Motion", "Tailwind CSS"],
-    image: "/placeholder.svg",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    title: "Task Management App",
-    description: "Collaborative project management tool with real-time updates and team features.",
-    tags: ["React", "Firebase", "TypeScript", "Zustand"],
-    image: "/placeholder.svg",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    title: "AI Content Generator",
-    description: "AI-powered content creation tool leveraging GPT for marketing and blogging.",
-    tags: ["Next.js", "OpenAI", "Prisma", "tRPC"],
-    image: "/placeholder.svg",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    title: "Fitness Tracking App",
-    description: "Mobile-first fitness application with workout tracking and progress analytics.",
-    tags: ["React Native", "Node.js", "MongoDB"],
-    image: "/placeholder.svg",
-    liveUrl: "#",
-    githubUrl: "#",
+    image_url: "/placeholder.svg",
+    live_url: "#",
+    github_url: "#",
   },
 ];
 
 const Projects = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error || !data || data.length === 0) {
+        setProjects(defaultProjects);
+      } else {
+        setProjects(data);
+      }
+      setLoading(false);
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <main className="bg-background min-h-screen sunlight-effect">
       <Navbar />
@@ -72,12 +84,7 @@ const Projects = () => {
         </div>
 
         <div className="container mx-auto px-6 lg:px-8 relative z-10">
-          <motion.div
-            className="text-center max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <ScrollReveal className="text-center max-w-3xl mx-auto">
             <span className="text-primary font-medium text-sm tracking-wider uppercase">Portfolio</span>
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-6">
               Featured{" "}
@@ -87,89 +94,92 @@ const Projects = () => {
               A collection of my best work, showcasing expertise in web development, 
               design, and problem-solving across various industries.
             </p>
-          </motion.div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Projects Grid */}
       <section className="pb-20">
         <div className="container mx-auto px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                className="group glass-card overflow-hidden hover:border-primary/50 transition-all duration-500"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                {/* Project Image */}
-                <div className="relative h-48 bg-muted overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60" />
-                  
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                    <a
-                      href={project.liveUrl}
-                      className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
-                    >
-                      <ExternalLink className="w-5 h-5" />
-                    </a>
-                    <a
-                      href={project.githubUrl}
-                      className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
-                    >
-                      <Github className="w-5 h-5" />
-                    </a>
-                  </div>
-                </div>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {projects.map((project, index) => (
+                <ScrollReveal key={project.id} delay={index * 0.1}>
+                  <div className="group glass-card overflow-hidden hover:border-primary/50 transition-all duration-500 h-full">
+                    {/* Project Image */}
+                    <div className="relative h-48 bg-muted overflow-hidden">
+                      <img
+                        src={project.image_url || "/placeholder.svg"}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60" />
+                      
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+                        {project.live_url && project.live_url !== "#" && (
+                          <a
+                            href={project.live_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+                          >
+                            <ExternalLink className="w-5 h-5" />
+                          </a>
+                        )}
+                        {project.github_url && project.github_url !== "#" && (
+                          <a
+                            href={project.github_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+                          >
+                            <Github className="w-5 h-5" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
 
-                {/* Project Content */}
-                <div className="p-6">
-                  <h3 className="font-display text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                    {project.description}
-                  </p>
-                  
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    {/* Project Content */}
+                    <div className="p-6">
+                      <h3 className="font-display text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                        {project.description}
+                      </p>
+                      
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2">
+                        {(project.tags || []).map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          )}
 
           {/* View More CTA */}
-          <motion.div
-            className="text-center mt-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <ScrollReveal className="text-center mt-16">
             <Button variant="heroOutline" size="xl" asChild>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/visheshjha2" target="_blank" rel="noopener noreferrer">
                 View More on GitHub
                 <ArrowUpRight className="w-5 h-5" />
               </a>
             </Button>
-          </motion.div>
+          </ScrollReveal>
         </div>
       </section>
 
