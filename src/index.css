@@ -173,6 +173,22 @@
     opacity: 0.03;
     pointer-events: none;
   }
+
+  .section-fade-top {
+    position: relative;
+  }
+
+  .section-fade-top::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
 }
 
 @layer utilities {

@@ -51,6 +51,7 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        charcoal: "hsl(var(--charcoal))",
         sun: {
           glow: "hsl(var(--sun-glow))",
           warm: "hsl(var(--sun-warm))",
@@ -58,7 +59,6 @@ export default {
           light: "hsl(var(--sun-light))",
           black: "hsl(var(--pure-black))",
           soft: "hsl(var(--soft-black))",
-          charcoal: "hsl(var(--charcoal))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
