@@ -106,16 +106,7 @@ const Index = () => {
   };
 
   return (
-    <main 
-      className="min-h-screen"
-      style={{
-        backgroundImage: "url('/images/homepage-bg.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <main className="min-h-screen bg-background">
       {/* Navbar */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-50"
@@ -152,8 +143,19 @@ const Index = () => {
       </motion.header>
 
       {/* Home Section */}
-      <section id="home" className="relative min-h-screen overflow-hidden">
+      <section 
+        id="home" 
+        className="relative min-h-screen overflow-hidden"
+        style={{
+          backgroundImage: "url('/images/homepage-bg.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="absolute inset-0 bg-black/40" />
+        {/* Bottom fade gradient to black */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-20 pointer-events-none" />
         <div className="relative z-10 container mx-auto px-6 lg:px-8">
           <div className="min-h-screen flex items-center">
             <motion.div
@@ -227,15 +229,22 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 relative">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <section id="about" className="py-20 relative bg-background sunlight-effect section-fade-top">
+        <div className="absolute inset-0 pointer-events-none">
+          <div 
+            className="absolute top-20 right-0 w-[500px] h-[500px] rounded-full opacity-20"
+            style={{
+              background: "radial-gradient(circle, hsl(var(--primary) / 0.4) 0%, transparent 70%)",
+            }}
+          />
+        </div>
         <div className="relative z-10 container mx-auto px-6 lg:px-8">
           <ScrollReveal>
-            <span className="text-primary font-medium text-sm tracking-wider uppercase drop-shadow">About Me</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold mt-4 mb-6 text-white drop-shadow-lg">
+            <span className="text-primary font-medium text-sm tracking-wider uppercase">About Me</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mt-4 mb-6 text-foreground">
               Passionate Developer & <span className="text-gradient-accent">Designer</span>
             </h2>
-            <p className="text-lg text-white/80 leading-relaxed max-w-3xl mb-12 drop-shadow">
+            <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mb-12">
               I'm Vishesh Jha, a full-stack developer and designer with a passion for creating 
               beautiful, functional digital experiences.
             </p>
@@ -243,15 +252,15 @@ const Index = () => {
 
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <ScrollReveal>
-              <h3 className="font-display text-2xl md:text-3xl font-bold mb-6 text-white drop-shadow-lg">Skills & Expertise</h3>
+              <h3 className="font-display text-2xl md:text-3xl font-bold mb-6 text-foreground">Skills & Expertise</h3>
               <div className="space-y-6">
                 {skills.map((skill, index) => (
                   <ScrollReveal key={skill.name} delay={index * 0.1}>
                     <div className="flex justify-between mb-2">
-                      <span className="text-white font-medium drop-shadow">{skill.name}</span>
-                      <span className="text-primary drop-shadow">{skill.level}%</span>
+                      <span className="text-foreground font-medium">{skill.name}</span>
+                      <span className="text-primary">{skill.level}%</span>
                     </div>
-                    <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
                       <div className="h-full bg-gradient-to-r from-primary to-sun-orange rounded-full" style={{ width: `${skill.level}%` }} />
                     </div>
                   </ScrollReveal>
@@ -262,12 +271,12 @@ const Index = () => {
             <div className="grid grid-cols-2 gap-6">
               {values.map((value, index) => (
                 <ScrollReveal key={value.title} delay={index * 0.1}>
-                  <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-6 group hover:border-primary/50 transition-all duration-300 h-full">
+                  <div className="glass-card p-6 group hover:border-primary/50 transition-all duration-300 h-full">
                     <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
                       <value.icon className="w-6 h-6 text-primary" />
                     </div>
-                    <h4 className="font-display font-semibold text-white mb-2 drop-shadow">{value.title}</h4>
-                    <p className="text-sm text-white/70 drop-shadow">{value.description}</p>
+                    <h4 className="font-display font-semibold text-foreground mb-2">{value.title}</h4>
+                    <p className="text-sm text-muted-foreground">{value.description}</p>
                   </div>
                 </ScrollReveal>
               ))}
@@ -277,15 +286,22 @@ const Index = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 relative">
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <section id="projects" className="py-20 relative bg-charcoal section-fade-top">
+        <div className="absolute inset-0 pointer-events-none">
+          <div 
+            className="absolute top-40 left-1/4 w-[600px] h-[600px] rounded-full opacity-15"
+            style={{
+              background: "radial-gradient(circle, hsl(var(--primary) / 0.4) 0%, transparent 70%)",
+            }}
+          />
+        </div>
         <div className="relative z-10 container mx-auto px-6 lg:px-8">
           <ScrollReveal className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-primary font-medium text-sm tracking-wider uppercase drop-shadow">Portfolio</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold mt-4 mb-6 text-white drop-shadow-lg">
+            <span className="text-primary font-medium text-sm tracking-wider uppercase">Portfolio</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mt-4 mb-6 text-foreground">
               Featured <span className="text-gradient-accent">Projects</span>
             </h2>
-            <p className="text-lg text-white/80 drop-shadow">
+            <p className="text-lg text-muted-foreground">
               A collection of my best work, showcasing expertise in web development.
             </p>
           </ScrollReveal>
@@ -298,29 +314,29 @@ const Index = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {projects.map((project, index) => (
                 <ScrollReveal key={project.id} delay={index * 0.1}>
-                  <div className="group bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-500 h-full">
+                  <div className="group glass-card overflow-hidden hover:border-primary/50 transition-all duration-500 h-full">
                     <div className="relative h-48 bg-muted overflow-hidden">
                       <img src={project.image_url || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60" />
                       <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
                         {project.live_url && project.live_url !== "#" && (
-                          <a href={project.live_url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
+                          <a href={project.live_url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
                             <ExternalLink className="w-5 h-5" />
                           </a>
                         )}
                         {project.github_url && project.github_url !== "#" && (
-                          <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
+                          <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
                             <Github className="w-5 h-5" />
                           </a>
                         )}
                       </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="font-display text-xl font-semibold text-white mb-2 group-hover:text-primary transition-colors duration-300 drop-shadow">{project.title}</h3>
-                      <p className="text-sm text-white/70 mb-4 line-clamp-2 drop-shadow">{project.description}</p>
+                      <h3 className="font-display text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">{project.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
                       <div className="flex flex-wrap gap-2">
                         {(project.tags || []).map((tag) => (
-                          <span key={tag} className="text-xs px-2 py-1 rounded-md bg-white/10 text-white/80">{tag}</span>
+                          <span key={tag} className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">{tag}</span>
                         ))}
                       </div>
                     </div>
@@ -333,35 +349,42 @@ const Index = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 relative">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <section id="contact" className="py-20 relative bg-background sunlight-effect section-fade-top">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div 
+            className="absolute top-1/2 right-0 w-[600px] h-[600px] rounded-full opacity-15 -translate-y-1/2"
+            style={{
+              background: "radial-gradient(circle, hsl(var(--primary) / 0.4) 0%, transparent 70%)",
+            }}
+          />
+        </div>
         <div className="relative z-10 container mx-auto px-6 lg:px-8">
           <ScrollReveal className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-primary font-medium text-sm tracking-wider uppercase drop-shadow">Get in Touch</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold mt-4 mb-6 text-white drop-shadow-lg">
+            <span className="text-primary font-medium text-sm tracking-wider uppercase">Get in Touch</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mt-4 mb-6 text-foreground">
               Let's Work <span className="text-gradient-accent">Together</span>
             </h2>
-            <p className="text-lg text-white/80 drop-shadow">
+            <p className="text-lg text-muted-foreground">
               Have a project in mind? I'd love to hear about it.
             </p>
           </ScrollReveal>
 
           <div className="grid lg:grid-cols-2 gap-16">
             <ScrollReveal>
-              <form onSubmit={handleSubmit} className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-8">
-                <h3 className="font-display text-2xl font-bold text-white mb-6 drop-shadow">Send a Message</h3>
+              <form onSubmit={handleSubmit} className="glass-card p-8">
+                <h3 className="font-display text-2xl font-bold text-foreground mb-6">Send a Message</h3>
                 <div className="space-y-6">
                   <div>
-                    <Label htmlFor="name" className="text-white/90">Name</Label>
-                    <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-white/50" placeholder="Your name" required maxLength={100} />
+                    <Label htmlFor="name" className="text-foreground/90">Name</Label>
+                    <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="mt-2" placeholder="Your name" required maxLength={100} />
                   </div>
                   <div>
-                    <Label htmlFor="email" className="text-white/90">Email</Label>
-                    <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-white/50" placeholder="your@email.com" required maxLength={255} />
+                    <Label htmlFor="email" className="text-foreground/90">Email</Label>
+                    <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="mt-2" placeholder="your@email.com" required maxLength={255} />
                   </div>
                   <div>
-                    <Label htmlFor="message" className="text-white/90">Message</Label>
-                    <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="mt-2 min-h-[150px] bg-white/10 border-white/20 text-white placeholder:text-white/50" placeholder="Tell me about your project..." required maxLength={1000} />
+                    <Label htmlFor="message" className="text-foreground/90">Message</Label>
+                    <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="mt-2 min-h-[150px]" placeholder="Tell me about your project..." required maxLength={1000} />
                   </div>
                   <Button type="submit" variant="hero" className="w-full" disabled={loading}>
                     {loading ? "Sending..." : (<>Send Message <Send className="w-4 h-4 ml-2" /></>)}
@@ -372,8 +395,8 @@ const Index = () => {
 
             <div className="space-y-8">
               <ScrollReveal delay={0.1}>
-                <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-8">
-                  <h3 className="font-display text-2xl font-bold text-white mb-6 drop-shadow">Contact Info</h3>
+                <div className="glass-card p-8">
+                  <h3 className="font-display text-2xl font-bold text-foreground mb-6">Contact Info</h3>
                   <div className="space-y-6">
                     {contactInfo.map((info) => (
                       <div key={info.title} className="flex items-start gap-4">
@@ -381,11 +404,11 @@ const Index = () => {
                           <info.icon className="w-5 h-5 text-primary" />
                         </div>
                         <div>
-                          <h4 className="font-medium text-white drop-shadow">{info.title}</h4>
+                          <h4 className="font-medium text-foreground">{info.title}</h4>
                           {info.href ? (
-                            <a href={info.href} className="text-white/70 hover:text-primary transition-colors duration-300">{info.value}</a>
+                            <a href={info.href} className="text-muted-foreground hover:text-primary transition-colors duration-300">{info.value}</a>
                           ) : (
-                            <p className="text-white/70">{info.value}</p>
+                            <p className="text-muted-foreground">{info.value}</p>
                           )}
                         </div>
                       </div>
@@ -395,12 +418,12 @@ const Index = () => {
               </ScrollReveal>
 
               <ScrollReveal delay={0.2}>
-                <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-8">
-                  <h3 className="font-display text-2xl font-bold text-white mb-6 drop-shadow">Follow Me</h3>
+                <div className="glass-card p-8">
+                  <h3 className="font-display text-2xl font-bold text-foreground mb-6">Follow Me</h3>
                   <div className="flex gap-4">
                     {socialLinks.map((social) => (
-                      <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group" title={social.name}>
-                        <social.icon className="w-5 h-5 text-white/70 group-hover:text-primary transition-colors" />
+                      <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-lg bg-muted border border-border flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group" title={social.name}>
+                        <social.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                       </a>
                     ))}
                   </div>
@@ -412,21 +435,20 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 relative border-t border-white/10">
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-        <div className="relative z-10 container mx-auto px-6 lg:px-8">
+      <footer className="py-12 relative bg-background border-t border-border">
+        <div className="container mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-sun-orange flex items-center justify-center">
                 <span className="font-display font-bold text-primary-foreground text-lg">V</span>
               </div>
-              <span className="font-display font-bold text-xl text-white">VWEB</span>
+              <span className="font-display font-bold text-xl text-foreground">VWEB</span>
             </div>
-            <p className="text-white/60 text-sm">© 2025 VWEB. All rights reserved.</p>
+            <p className="text-muted-foreground text-sm">© 2025 VWEB. All rights reserved.</p>
             <div className="flex gap-4">
               {socialLinks.map((social) => (
-                <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-primary/20 transition-colors duration-300 group" title={social.name}>
-                  <social.icon className="w-5 h-5 text-white/60 group-hover:text-primary transition-colors" />
+                <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/20 transition-colors duration-300 group" title={social.name}>
+                  <social.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </a>
               ))}
             </div>
