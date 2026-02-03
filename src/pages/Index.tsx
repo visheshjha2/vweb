@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowRight, Sparkles, Mail, MapPin, Send, Github, ExternalLink, Search, Zap, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedSkillBar from "@/components/AnimatedSkillBar";
 import DevpostIcon from "@/components/DevpostIcon";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
@@ -171,8 +172,8 @@ const Index = () => {
         }}
       >
         
-      {/* Reduced dark overlay for brighter image */}
-      <div className="absolute inset-0 bg-black/20" />
+      {/* Minimal dark overlay for vibrant image */}
+      <div className="absolute inset-0 bg-black/10" />
       {/* Bottom fade gradient to black */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-20 pointer-events-none" />
         <div className="relative z-10 container mx-auto px-6 lg:px-8">
@@ -274,15 +275,12 @@ const Index = () => {
               <h3 className="font-display text-2xl md:text-3xl font-bold mb-6 text-foreground">Skills & Expertise</h3>
               <div className="space-y-6">
                 {skills.map((skill, index) => (
-                  <ScrollReveal key={skill.name} delay={index * 0.1}>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-foreground font-medium">{skill.name}</span>
-                      <span className="text-primary">{skill.level}%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-primary to-sun-orange rounded-full" style={{ width: `${skill.level}%` }} />
-                    </div>
-                  </ScrollReveal>
+                  <AnimatedSkillBar 
+                    key={skill.name} 
+                    name={skill.name} 
+                    level={skill.level} 
+                    delay={index * 0.15} 
+                  />
                 ))}
               </div>
             </ScrollReveal>
