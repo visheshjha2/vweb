@@ -91,12 +91,29 @@ const Index = () => {
       return;
     }
     setLoading(true);
+    
+    // Submit to Formspree for email notifications
+    const formspreeResponse = await fetch('https://formspree.io/f/xykpapqg', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        message: formData.message.trim(),
+      })
+    });
+
+    // Also save to database for admin panel
     const { error } = await supabase.from('contact_messages').insert({
       name: formData.name.trim(),
       email: formData.email.trim(),
       message: formData.message.trim(),
     });
-    if (error) {
+
+    if (error || !formspreeResponse.ok) {
       toast({ title: "Error", description: "Failed to send message. Please try again.", variant: "destructive" });
     } else {
       toast({ title: "Message Sent!", description: "Thank you for reaching out. I'll get back to you soon." });
@@ -153,9 +170,11 @@ const Index = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="absolute inset-0 bg-black/40" />
-        {/* Bottom fade gradient to black */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-20 pointer-events-none" />
+        
+      {/* Reduced dark overlay for brighter image */}
+      <div className="absolute inset-0 bg-black/20" />
+      {/* Bottom fade gradient to black */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-20 pointer-events-none" />
         <div className="relative z-10 container mx-auto px-6 lg:px-8">
           <div className="min-h-screen flex items-center">
             <motion.div
@@ -444,7 +463,15 @@ const Index = () => {
               </div>
               <span className="font-display font-bold text-xl text-foreground">VWEB</span>
             </div>
-            <p className="text-muted-foreground text-sm">© 2025 VWEB. All rights reserved.</p>
+            <div className="flex items-center gap-4">
+              <p className="text-muted-foreground text-sm">© 2025 VWEB. All rights reserved.</p>
+              <a 
+                href="/admin" 
+                className="text-xs text-muted-foreground/50 hover:text-primary transition-colors duration-300"
+              >
+                Admin
+              </a>
+            </div>
             <div className="flex gap-4">
               {socialLinks.map((social) => (
                 <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/20 transition-colors duration-300 group" title={social.name}>
