@@ -31,12 +31,13 @@ interface ContactMessage {
 }
 
 const Admin = () => {
-  const { user, loading, isAdmin, signIn, signOut } = useAuth();
+  const { user, loading, isAdmin, signIn, signUp, signOut } = useAuth();
   const { toast } = useToast();
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   
   const [projects, setProjects] = useState<Project[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -186,6 +187,22 @@ const Admin = () => {
     );
   }
 
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    
+    const { error } = await signUp(email, password);
+    
+    if (error) {
+      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Account created!", description: "Please check your email to verify your account, then sign in." });
+      setIsSignUp(false);
+    }
+    
+    setAuthLoading(false);
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen bg-background sunlight-effect flex items-center justify-center p-6">
@@ -194,8 +211,10 @@ const Admin = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h1 className="font-display text-2xl font-bold text-foreground mb-6 text-center">Admin Login</h1>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <h1 className="font-display text-2xl font-bold text-foreground mb-6 text-center">
+            {isSignUp ? "Admin Sign Up" : "Admin Login"}
+          </h1>
+          <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
@@ -216,12 +235,21 @@ const Admin = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1"
                 required
+                minLength={6}
               />
             </div>
             <Button type="submit" variant="hero" className="w-full" disabled={authLoading}>
-              {authLoading ? "Signing in..." : "Sign In"}
+              {authLoading ? (isSignUp ? "Creating account..." : "Signing in...") : (isSignUp ? "Sign Up" : "Sign In")}
             </Button>
           </form>
+          <div className="mt-4 text-center">
+            <button 
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm text-primary hover:underline"
+            >
+              {isSignUp ? "Already have an account? Sign In" : "Need an account? Sign Up"}
+            </button>
+          </div>
         </motion.div>
       </div>
     );
