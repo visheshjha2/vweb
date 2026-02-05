@@ -35,15 +35,15 @@ const Footer = () => {
         }}
       />
       
-      <div className="container mx-auto px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-12 mb-12">
           {/* Brand */}
-          <div className="space-y-4">
+          <div className="space-y-4 sm:col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-sun-orange flex items-center justify-center">
-                <span className="font-display font-bold text-primary-foreground text-lg">V</span>
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-primary to-sun-orange flex items-center justify-center">
+                <span className="font-display font-bold text-primary-foreground text-base sm:text-lg">V</span>
               </div>
-              <span className="font-display font-bold text-xl text-foreground">VWEB</span>
+              <span className="font-display font-bold text-lg sm:text-xl text-foreground">VWEB</span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-xs">
               Crafting exceptional digital experiences through innovative web development and design.
@@ -69,7 +69,7 @@ const Footer = () => {
           {/* Social Links */}
           <div className="space-y-4">
             <h4 className="font-display font-semibold text-foreground">Connect</h4>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-3 sm:gap-4">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
@@ -78,8 +78,8 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="group flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
                 >
-                  <div className="w-10 h-10 rounded-lg glass-subtle flex items-center justify-center group-hover:border-primary/50 transition-colors duration-300">
-                    <social.icon className="w-5 h-5" />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg glass-subtle flex items-center justify-center group-hover:border-primary/50 transition-colors duration-300">
+                    <social.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
                   <span className="text-sm">{social.name}</span>
                 </a>
@@ -89,11 +89,11 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-border/30 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
+        <div className="pt-8 border-t border-border/30 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             © {currentYear} VWEB. All rights reserved.
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Designed & Developed by{" "}
             <span className="text-primary font-medium">Vishesh Jha</span>
           </p>

@@ -91,14 +91,14 @@ const Projects = () => {
           />
         </div>
 
-        <div className="container mx-auto px-6 lg:px-8 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal className="text-center max-w-3xl mx-auto">
             <span className="text-primary font-medium text-sm tracking-wider uppercase">Portfolio</span>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-6">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-6">
               Featured{" "}
               <span className="text-gradient-accent">Projects</span>
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground">
               A collection of my best work, showcasing expertise in web development, 
               design, and problem-solving across various industries.
             </p>
@@ -108,18 +108,18 @@ const Projects = () => {
 
       {/* Projects Grid */}
       <section className="pb-20">
-        <div className="container mx-auto px-6 lg:px-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="flex justify-center py-12">
               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {projects.map((project, index) => (
                 <ScrollReveal key={project.id} delay={index * 0.1}>
                   <div className="group glass-card overflow-hidden hover:border-primary/50 transition-all duration-500 h-full">
                     {/* Project Image */}
-                    <div className="relative h-48 bg-muted overflow-hidden">
+                    <div className="relative h-40 sm:h-48 bg-muted overflow-hidden">
                       <img
                         src={project.image_url || "/placeholder.svg"}
                         alt={project.title}
@@ -153,16 +153,16 @@ const Projects = () => {
                     </div>
 
                     {/* Project Content */}
-                    <div className="p-6">
-                      <h3 className="font-display text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                    <div className="p-4 sm:p-6">
+                      <h3 className="font-display text-lg sm:text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
                         {project.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-4 line-clamp-2">
                         {project.description}
                       </p>
                       
                       {/* Tags */}
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {(project.tags || []).map((tag) => (
                           <span
                             key={tag}
@@ -180,11 +180,11 @@ const Projects = () => {
           )}
 
           {/* View More CTA */}
-          <ScrollReveal className="text-center mt-16">
-            <Button variant="heroOutline" size="xl" asChild>
-              <a href="https://github.com/visheshjha2" target="_blank" rel="noopener noreferrer">
+          <ScrollReveal className="text-center mt-12 sm:mt-16">
+            <Button variant="heroOutline" size="lg" asChild>
+              <a href="https://github.com/visheshjha2" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                 View More on GitHub
-                <ArrowUpRight className="w-5 h-5" />
+                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
             </Button>
           </ScrollReveal>

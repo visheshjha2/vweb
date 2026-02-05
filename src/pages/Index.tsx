@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,6 +76,7 @@ const socialLinks = [
 
 const Index = () => {
   const { toast } = useToast();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -142,12 +144,12 @@ const Index = () => {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <nav className="container mx-auto px-6 lg:px-8 py-4">
-          <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl px-6 py-4 flex items-center justify-between">
+          <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
             <a href="#home" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-sun-orange flex items-center justify-center">
-                <span className="font-display font-bold text-primary-foreground text-lg">V</span>
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-primary to-sun-orange flex items-center justify-center">
+                <span className="font-display font-bold text-primary-foreground text-base sm:text-lg">V</span>
               </div>
-              <span className="font-display font-bold text-xl text-white drop-shadow-lg">VWEB</span>
+              <span className="font-display font-bold text-lg sm:text-xl text-white drop-shadow-lg">VWEB</span>
             </a>
             <div className="hidden md:flex items-center gap-8">
               {["Home", "About", "Projects", "Contact"].map((link) => (
@@ -165,7 +167,44 @@ const Index = () => {
                 <a href="#contact">Get in Touch</a>
               </Button>
             </div>
+            {/* Mobile Menu Toggle */}
+            <button
+              className="md:hidden text-white p-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
+          
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <motion.div
+              className="md:hidden mt-2 bg-black/60 backdrop-blur-xl border border-white/10 rounded-xl p-6"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex flex-col gap-4">
+                {["Home", "About", "Projects", "Contact"].map((link) => (
+                  <a
+                    key={link}
+                    href={`#${link.toLowerCase()}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-base font-medium text-white/80 hover:text-white transition-colors duration-300"
+                  >
+                    {link}
+                  </a>
+                ))}
+                <Button variant="hero" className="mt-4" asChild>
+                  <a href="#contact" onClick={() => setMobileMenuOpen(false)}>
+                    Get in Touch
+                  </a>
+                </Button>
+              </div>
+            </motion.div>
+          )}
         </nav>
       </motion.header>
 
@@ -201,7 +240,7 @@ const Index = () => {
               </motion.div>
 
               <motion.div className="space-y-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}>
-                <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight text-white drop-shadow-lg">
+                <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight text-white drop-shadow-lg">
                   Crafting<br />
                   <span className="text-gradient-accent">Digital</span><br />
                   Experiences
@@ -236,7 +275,7 @@ const Index = () => {
               </motion.div>
 
               <motion.div
-                className="flex gap-8 pt-8 border-t border-white/20"
+                className="flex flex-wrap gap-6 sm:gap-8 pt-8 border-t border-white/20"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
@@ -247,8 +286,8 @@ const Index = () => {
                   { value: "5★", label: "Average Rating" },
                 ].map((stat, index) => (
                   <div key={index} className="space-y-1">
-                    <div className="text-2xl md:text-3xl font-display font-bold text-white drop-shadow-lg">{stat.value}</div>
-                    <div className="text-sm text-white/70 drop-shadow">{stat.label}</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white drop-shadow-lg">{stat.value}</div>
+                    <div className="text-xs sm:text-sm text-white/70 drop-shadow">{stat.label}</div>
                   </div>
                 ))}
               </motion.div>
@@ -270,19 +309,19 @@ const Index = () => {
         <div className="relative z-10 container mx-auto px-6 lg:px-8">
           <ScrollReveal>
             <span className="text-primary font-medium text-sm tracking-wider uppercase">About Me</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold mt-4 mb-6 text-foreground">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-foreground">
               Passionate Developer & <span className="text-gradient-accent">Designer</span>
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mb-12">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-12">
               I'm Vishesh Jha, a full-stack developer and designer with a passion for creating 
               beautiful, functional digital experiences.
             </p>
           </ScrollReveal>
 
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             <ScrollReveal>
-              <h3 className="font-display text-2xl md:text-3xl font-bold mb-6 text-foreground">Skills & Expertise</h3>
-              <div className="space-y-6">
+              <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold mb-6 text-foreground">Skills & Expertise</h3>
+              <div className="space-y-4 sm:space-y-6">
                 {skills.map((skill, index) => (
                   <AnimatedSkillBar 
                     key={skill.name} 
@@ -294,15 +333,15 @@ const Index = () => {
               </div>
             </ScrollReveal>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {values.map((value, index) => (
                 <ScrollReveal key={value.title} delay={index * 0.1}>
-                  <div className="glass-card p-6 group hover:border-primary/50 transition-all duration-300 h-full">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                      <value.icon className="w-6 h-6 text-primary" />
+                  <div className="glass-card p-4 sm:p-6 group hover:border-primary/50 transition-all duration-300 h-full">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                      <value.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                     </div>
-                    <h4 className="font-display font-semibold text-foreground mb-2">{value.title}</h4>
-                    <p className="text-sm text-muted-foreground">{value.description}</p>
+                    <h4 className="font-display font-semibold text-foreground mb-2 text-sm sm:text-base">{value.title}</h4>
+                    <p className="text-xs sm:text-sm text-muted-foreground">{value.description}</p>
                   </div>
                 </ScrollReveal>
               ))}
@@ -322,12 +361,12 @@ const Index = () => {
           />
         </div>
         <div className="relative z-10 container mx-auto px-6 lg:px-8">
-          <ScrollReveal className="text-center max-w-3xl mx-auto mb-16">
+          <ScrollReveal className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <span className="text-primary font-medium text-sm tracking-wider uppercase">Portfolio</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold mt-4 mb-6 text-foreground">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-foreground">
               Featured <span className="text-gradient-accent">Projects</span>
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground">
               A collection of my best work, showcasing expertise in web development.
             </p>
           </ScrollReveal>
@@ -337,7 +376,7 @@ const Index = () => {
               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {projects.map((project, index) => (
                 <ScrollReveal key={project.id} delay={index * 0.1}>
                   <div className="group glass-card overflow-hidden hover:border-primary/50 transition-all duration-500 h-full">
@@ -384,22 +423,22 @@ const Index = () => {
             }}
           />
         </div>
-        <div className="relative z-10 container mx-auto px-6 lg:px-8">
-          <ScrollReveal className="text-center max-w-3xl mx-auto mb-16">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <span className="text-primary font-medium text-sm tracking-wider uppercase">Get in Touch</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold mt-4 mb-6 text-foreground">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-foreground">
               Let's Work <span className="text-gradient-accent">Together</span>
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground">
               Have a project in mind? I'd love to hear about it.
             </p>
           </ScrollReveal>
 
-          <div className="grid lg:grid-cols-2 gap-16">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
             <ScrollReveal>
-              <form onSubmit={handleSubmit} className="glass-card p-8">
-                <h3 className="font-display text-2xl font-bold text-foreground mb-6">Send a Message</h3>
-                <div className="space-y-6">
+              <form onSubmit={handleSubmit} className="glass-card p-6 sm:p-8">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-6">Send a Message</h3>
+                <div className="space-y-4 sm:space-y-6">
                   <div>
                     <Label htmlFor="name" className="text-foreground/90">Name</Label>
                     <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="mt-2" placeholder="Your name" required maxLength={100} />
@@ -410,7 +449,7 @@ const Index = () => {
                   </div>
                   <div>
                     <Label htmlFor="message" className="text-foreground/90">Message</Label>
-                    <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="mt-2 min-h-[150px]" placeholder="Tell me about your project..." required maxLength={1000} />
+                    <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="mt-2 min-h-[120px] sm:min-h-[150px]" placeholder="Tell me about your project..." required maxLength={1000} />
                   </div>
                   <Button type="submit" variant="hero" className="w-full" disabled={loading}>
                     {loading ? "Sending..." : (<>Send Message <Send className="w-4 h-4 ml-2" /></>)}
@@ -419,22 +458,22 @@ const Index = () => {
               </form>
             </ScrollReveal>
 
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8">
               <ScrollReveal delay={0.1}>
-                <div className="glass-card p-8">
-                  <h3 className="font-display text-2xl font-bold text-foreground mb-6">Contact Info</h3>
-                  <div className="space-y-6">
+                <div className="glass-card p-6 sm:p-8">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-6">Contact Info</h3>
+                  <div className="space-y-4 sm:space-y-6">
                     {contactInfo.map((info) => (
-                      <div key={info.title} className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <info.icon className="w-5 h-5 text-primary" />
+                      <div key={info.title} className="flex items-start gap-3 sm:gap-4">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <info.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                         </div>
-                        <div>
-                          <h4 className="font-medium text-foreground">{info.title}</h4>
+                        <div className="min-w-0">
+                          <h4 className="font-medium text-foreground text-sm sm:text-base">{info.title}</h4>
                           {info.href ? (
-                            <a href={info.href} className="text-muted-foreground hover:text-primary transition-colors duration-300">{info.value}</a>
+                            <a href={info.href} className="text-muted-foreground hover:text-primary transition-colors duration-300 text-sm sm:text-base break-all">{info.value}</a>
                           ) : (
-                            <p className="text-muted-foreground">{info.value}</p>
+                            <p className="text-muted-foreground text-sm sm:text-base">{info.value}</p>
                           )}
                         </div>
                       </div>
@@ -444,12 +483,12 @@ const Index = () => {
               </ScrollReveal>
 
               <ScrollReveal delay={0.2}>
-                <div className="glass-card p-8">
-                  <h3 className="font-display text-2xl font-bold text-foreground mb-6">Follow Me</h3>
-                  <div className="flex gap-4">
+                <div className="glass-card p-6 sm:p-8">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-6">Follow Me</h3>
+                  <div className="flex gap-3 sm:gap-4">
                     {socialLinks.map((social) => (
-                      <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-lg bg-muted border border-border flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group" title={social.name}>
-                        <social.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                      <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-muted border border-border flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group" title={social.name}>
+                        <social.icon className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                       </a>
                     ))}
                   </div>
@@ -461,17 +500,17 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 relative bg-background border-t border-border">
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+      <footer className="py-8 sm:py-12 relative bg-background border-t border-border">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-sun-orange flex items-center justify-center">
-                <span className="font-display font-bold text-primary-foreground text-lg">V</span>
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-primary to-sun-orange flex items-center justify-center">
+                <span className="font-display font-bold text-primary-foreground text-base sm:text-lg">V</span>
               </div>
-              <span className="font-display font-bold text-xl text-foreground">VWEB</span>
+              <span className="font-display font-bold text-lg sm:text-xl text-foreground">VWEB</span>
             </div>
-            <div className="flex items-center gap-4">
-              <p className="text-muted-foreground text-sm">© 2025 VWEB. All rights reserved.</p>
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+              <p className="text-muted-foreground text-xs sm:text-sm">© 2025 VWEB. All rights reserved.</p>
               <a 
                 href="/admin" 
                 className="text-xs text-muted-foreground/50 hover:text-primary transition-colors duration-300"
@@ -479,10 +518,10 @@ const Index = () => {
                 Admin
               </a>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-3 sm:gap-4">
               {socialLinks.map((social) => (
-                <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/20 transition-colors duration-300 group" title={social.name}>
-                  <social.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/20 transition-colors duration-300 group" title={social.name}>
+                  <social.icon className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </a>
               ))}
             </div>
