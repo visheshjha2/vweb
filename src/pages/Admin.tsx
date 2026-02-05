@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Plus, Trash2, Bell, X, LogOut, Eye, EyeOff } from "lucide-react";
+import { Plus, Trash2, Bell, X, LogOut, Eye, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -49,10 +49,13 @@ const Admin = () => {
     title: "",
     description: "",
     tags: "",
-    image_url: "",
     live_url: "",
     github_url: ""
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isAdmin) {
@@ -121,14 +124,57 @@ const Admin = () => {
     setAuthLoading(false);
   };
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const filePath = `projects/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('project-images')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      toast({ title: "Error uploading image", description: uploadError.message, variant: "destructive" });
+      return null;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('project-images')
+      .getPublicUrl(filePath);
+
+    return publicUrl;
+  };
+
   const handleAddProject = async (e: React.FormEvent) => {
     e.preventDefault();
+    setUploading(true);
+    
+    let imageUrl: string | null = null;
+    if (imageFile) {
+      imageUrl = await uploadImage(imageFile);
+      if (!imageUrl) {
+        setUploading(false);
+        return;
+      }
+    }
     
     const { error } = await supabase.from('projects').insert({
       title: newProject.title,
       description: newProject.description,
       tags: newProject.tags.split(',').map(t => t.trim()).filter(Boolean),
-      image_url: newProject.image_url || null,
+      image_url: imageUrl,
       live_url: newProject.live_url || null,
       github_url: newProject.github_url || null
     });
@@ -137,10 +183,13 @@ const Admin = () => {
       toast({ title: "Error adding project", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Project added successfully!" });
-      setNewProject({ title: "", description: "", tags: "", image_url: "", live_url: "", github_url: "" });
+      setNewProject({ title: "", description: "", tags: "", live_url: "", github_url: "" });
+      setImageFile(null);
+      setImagePreview(null);
       setShowAddForm(false);
       fetchProjects();
     }
+    setUploading(false);
   };
 
   const handleDeleteProject = async (id: string) => {
@@ -397,18 +446,41 @@ const Admin = () => {
                     required
                   />
                 </div>
-                <div>
-                  <Label htmlFor="image_url">Image URL</Label>
-                  <Input
-                    id="image_url"
-                    value={newProject.image_url}
-                    onChange={(e) => setNewProject({ ...newProject, image_url: e.target.value })}
-                    placeholder="https://..."
-                    className="mt-1"
-                  />
+                <div className="md:col-span-2">
+                  <Label>Project Image</Label>
+                  <div className="mt-1 flex items-center gap-4">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageSelect}
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex items-center gap-2"
+                    >
+                      <Upload className="w-4 h-4" />
+                      {imageFile ? "Change Image" : "Upload Image"}
+                    </Button>
+                    {imagePreview && (
+                      <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-border">
+                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => { setImageFile(null); setImagePreview(null); }}
+                          className="absolute top-1 right-1 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center text-xs"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div>
-                  <Label htmlFor="live_url">Live URL</Label>
+                  <Label htmlFor="live_url">Project Link (opens in new tab)</Label>
                   <Input
                     id="live_url"
                     value={newProject.live_url}
@@ -429,8 +501,10 @@ const Admin = () => {
                 </div>
               </div>
               <div className="flex gap-2 mt-4">
-                <Button type="submit" variant="hero">Save Project</Button>
-                <Button type="button" variant="outline" onClick={() => setShowAddForm(false)}>Cancel</Button>
+                <Button type="submit" variant="hero" disabled={uploading}>
+                  {uploading ? "Uploading..." : "Save Project"}
+                </Button>
+                <Button type="button" variant="outline" onClick={() => { setShowAddForm(false); setImageFile(null); setImagePreview(null); }}>Cancel</Button>
               </div>
             </motion.form>
           )}
