@@ -12,6 +12,15 @@ import DevpostIcon from "@/components/DevpostIcon";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
+// Helper to ensure URLs have protocol
+const ensureAbsoluteUrl = (url: string | null): string | null => {
+  if (!url) return null;
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  return `https://${url}`;
+};
+
 // Contact form validation
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -333,16 +342,16 @@ const Index = () => {
                 <ScrollReveal key={project.id} delay={index * 0.1}>
                   <div className="group glass-card overflow-hidden hover:border-primary/50 transition-all duration-500 h-full">
                     <div className="relative h-48 bg-muted overflow-hidden">
-                      <img src={project.image_url || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60" />
+                      <img src={project.image_url || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 brightness-110" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card/40 to-transparent opacity-40" />
                       <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
                         {project.live_url && project.live_url !== "#" && (
-                          <a href={project.live_url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
+                          <a href={ensureAbsoluteUrl(project.live_url) || "#"} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
                             <ExternalLink className="w-5 h-5" />
                           </a>
                         )}
                         {project.github_url && project.github_url !== "#" && (
-                          <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
+                          <a href={ensureAbsoluteUrl(project.github_url) || "#"} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
                             <Github className="w-5 h-5" />
                           </a>
                         )}
