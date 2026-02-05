@@ -46,6 +46,14 @@ const defaultProjects = [
   },
 ];
 
+const ensureAbsoluteUrl = (url: string | null): string | null => {
+  if (!url) return null;
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  return `https://${url}`;
+};
+
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -123,7 +131,7 @@ const Projects = () => {
                       <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
                         {project.live_url && project.live_url !== "#" && (
                           <a
-                            href={project.live_url}
+                            href={ensureAbsoluteUrl(project.live_url) || "#"}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
@@ -133,7 +141,7 @@ const Projects = () => {
                         )}
                         {project.github_url && project.github_url !== "#" && (
                           <a
-                            href={project.github_url}
+                            href={ensureAbsoluteUrl(project.github_url) || "#"}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-12 h-12 rounded-full bg-background/90 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
