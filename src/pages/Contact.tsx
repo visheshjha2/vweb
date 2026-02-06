@@ -98,24 +98,24 @@ const Contact = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-20 relative overflow-hidden">
+      <section className="pt-24 sm:pt-32 pb-12 sm:pb-20 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div 
-            className="absolute top-20 left-1/3 w-[500px] h-[500px] rounded-full opacity-15"
+            className="absolute top-20 left-1/3 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full opacity-15"
             style={{
               background: "radial-gradient(circle, hsl(var(--primary) / 0.4) 0%, transparent 70%)",
             }}
           />
         </div>
 
-        <div className="container mx-auto px-6 lg:px-8 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal className="text-center max-w-3xl mx-auto">
-            <span className="text-primary font-medium text-sm tracking-wider uppercase">Get in Touch</span>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-6">
+            <span className="text-primary font-medium text-xs sm:text-sm tracking-wider uppercase">Get in Touch</span>
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-3 sm:mt-4 mb-4 sm:mb-6">
               Let's Work{" "}
               <span className="text-gradient-accent">Together</span>
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground">
               Have a project in mind? I'd love to hear about it. Send me a message 
               and let's create something amazing together.
             </p>
@@ -124,17 +124,17 @@ const Contact = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="pb-20">
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16">
+      <section className="pb-12 sm:pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
             {/* Contact Form */}
             <ScrollReveal>
-              <form onSubmit={handleSubmit} className="glass-card p-8">
-                <h2 className="font-display text-2xl font-bold text-foreground mb-6">Send a Message</h2>
+              <form onSubmit={handleSubmit} className="glass-card p-5 sm:p-8">
+                <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">Send a Message</h2>
                 
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   <div>
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name" className="text-sm sm:text-base">Name</Label>
                     <Input
                       id="name"
                       value={formData.name}
@@ -147,7 +147,7 @@ const Contact = () => {
                   </div>
                   
                   <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" className="text-sm sm:text-base">Email</Label>
                     <Input
                       id="email"
                       type="email"
@@ -161,12 +161,12 @@ const Contact = () => {
                   </div>
                   
                   <div>
-                    <Label htmlFor="message">Message</Label>
+                    <Label htmlFor="message" className="text-sm sm:text-base">Message</Label>
                     <Textarea
                       id="message"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="mt-2 min-h-[150px] bg-background/50 border-border/50 focus:border-primary"
+                      className="mt-2 min-h-[120px] sm:min-h-[150px] bg-background/50 border-border/50 focus:border-primary"
                       placeholder="Tell me about your project..."
                       required
                       maxLength={1000}
@@ -186,27 +186,27 @@ const Contact = () => {
             </ScrollReveal>
 
             {/* Contact Info */}
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8">
               <ScrollReveal delay={0.1}>
-                <div className="glass-card p-8">
-                  <h2 className="font-display text-2xl font-bold text-foreground mb-6">Contact Info</h2>
-                  <div className="space-y-6">
+                <div className="glass-card p-5 sm:p-8">
+                  <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">Contact Info</h2>
+                  <div className="space-y-4 sm:space-y-6">
                     {contactInfo.map((info) => (
-                      <div key={info.title} className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <info.icon className="w-5 h-5 text-primary" />
+                      <div key={info.title} className="flex items-start gap-3 sm:gap-4">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <info.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                         </div>
                         <div>
-                          <h3 className="font-medium text-foreground">{info.title}</h3>
+                          <h3 className="font-medium text-foreground text-sm sm:text-base">{info.title}</h3>
                           {info.href ? (
                             <a 
                               href={info.href}
-                              className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                              className="text-muted-foreground hover:text-primary transition-colors duration-300 text-sm sm:text-base break-all"
                             >
                               {info.value}
                             </a>
                           ) : (
-                            <p className="text-muted-foreground">{info.value}</p>
+                            <p className="text-muted-foreground text-sm sm:text-base">{info.value}</p>
                           )}
                         </div>
                       </div>
@@ -216,19 +216,19 @@ const Contact = () => {
               </ScrollReveal>
 
               <ScrollReveal delay={0.2}>
-                <div className="glass-card p-8">
-                  <h2 className="font-display text-2xl font-bold text-foreground mb-6">Follow Me</h2>
-                  <div className="flex gap-4">
+                <div className="glass-card p-5 sm:p-8">
+                  <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">Follow Me</h2>
+                  <div className="flex gap-3 sm:gap-4">
                     {socialLinks.map((social) => (
                       <a
                         key={social.name}
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-lg glass-subtle flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group"
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg glass-subtle flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group"
                         title={social.name}
                       >
-                        <social.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <social.icon className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                       </a>
                     ))}
                   </div>
