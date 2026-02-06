@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Plus, Trash2, Bell, X, LogOut, Eye, Upload } from "lucide-react";
+import { Plus, Trash2, Bell, X, LogOut, Eye, Upload, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,7 +37,6 @@ const Admin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
   
   const [projects, setProjects] = useState<Project[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -236,22 +235,6 @@ const Admin = () => {
     );
   }
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setAuthLoading(true);
-    
-    const { error } = await signUp(email, password);
-    
-    if (error) {
-      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Account created!", description: "Please check your email to verify your account, then sign in." });
-      setIsSignUp(false);
-    }
-    
-    setAuthLoading(false);
-  };
-
   if (!user) {
     return (
       <div className="min-h-screen bg-background sunlight-effect flex items-center justify-center p-6">
@@ -261,9 +244,9 @@ const Admin = () => {
           animate={{ opacity: 1, y: 0 }}
         >
           <h1 className="font-display text-2xl font-bold text-foreground mb-6 text-center">
-            {isSignUp ? "Admin Sign Up" : "Admin Login"}
+            Admin Login
           </h1>
-          <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
@@ -288,16 +271,16 @@ const Admin = () => {
               />
             </div>
             <Button type="submit" variant="hero" className="w-full" disabled={authLoading}>
-              {authLoading ? (isSignUp ? "Creating account..." : "Signing in...") : (isSignUp ? "Sign Up" : "Sign In")}
+              {authLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
           <div className="mt-4 text-center">
-            <button 
-              onClick={() => setIsSignUp(!isSignUp)}
+            <a 
+              href="/"
               className="text-sm text-primary hover:underline"
             >
-              {isSignUp ? "Already have an account? Sign In" : "Need an account? Sign Up"}
-            </button>
+              ← Back to Home
+            </a>
           </div>
         </motion.div>
       </div>
@@ -315,6 +298,10 @@ const Admin = () => {
         <div className="container mx-auto flex items-center justify-between">
           <h1 className="font-display text-2xl font-bold text-foreground">Admin Panel</h1>
           <div className="flex items-center gap-4">
+            {/* Back to Home */}
+            <a href="/" className="p-2 rounded-lg glass-subtle hover:border-primary/50 transition-colors" title="Back to Home">
+              <Home className="w-5 h-5 text-foreground" />
+            </a>
             {/* Notifications */}
             <div className="relative">
               <button
