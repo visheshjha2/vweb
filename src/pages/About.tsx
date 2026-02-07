@@ -4,12 +4,12 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const skills = [
-  { name: "SMTP", level: 95 },
-  { name: "SEO Optimization", level: 90 },
-  { name: "API Integration", level: 85 },
-  { name: "Hosting", level: 88 },
-  { name: "Authentication System", level: 95 },
-  { name: "Database Design", level: 80 },
+  { name: "SMTP", level: 100 },
+  { name: "SEO Optimization", level: 98 },
+  { name: "API Integration", level: 95 },
+  { name: "Hosting", level: 100 },
+  { name: "Authentication System", level: 100 },
+  { name: "Database Design", level: 92 },
 ];
 
 const values = [
