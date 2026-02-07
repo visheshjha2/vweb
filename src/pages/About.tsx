@@ -5,11 +5,11 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 const skills = [
   { name: "SMTP", level: 100 },
-  { name: "SEO Optimization", level: 98 },
+  { name: "SEO Optimization", level: 100 },
   { name: "API Integration", level: 95 },
   { name: "Hosting", level: 100 },
   { name: "Authentication System", level: 100 },
-  { name: "Database Design", level: 92 },
+  { name: "Database Design", level: 100 },
 ];
 
 const values = [
