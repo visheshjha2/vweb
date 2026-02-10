@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { MoreVertical, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -135,7 +135,7 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background overflow-x-hidden">
       {/* Navbar */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-50"
@@ -143,14 +143,17 @@ const Index = () => {
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <nav className="container mx-auto px-6 lg:px-8 py-4">
+        <nav className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+            {/* Logo */}
             <a href="#home" className="flex items-center gap-2">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-primary to-sun-orange flex items-center justify-center">
                 <span className="font-display font-bold text-primary-foreground text-base sm:text-lg">V</span>
               </div>
               <span className="font-display font-bold text-lg sm:text-xl text-white drop-shadow-lg">VWEB</span>
             </a>
+
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               {["Home", "About", "Projects", "Contact"].map((link) => (
                 <a
@@ -167,17 +170,23 @@ const Index = () => {
                 <a href="#contact">Get in Touch</a>
               </Button>
             </div>
-            {/* Mobile Menu Toggle */}
-            <button
-              className="md:hidden text-white p-2"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+
+            {/* Mobile: Get in Touch + Three dots */}
+            <div className="flex md:hidden items-center gap-2">
+              <Button variant="hero" size="sm" asChild>
+                <a href="#contact" className="text-xs px-3 py-1.5">Get in Touch</a>
+              </Button>
+              <button
+                className="text-white p-2"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <MoreVertical className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
           
-          {/* Mobile Navigation */}
+          {/* Mobile Navigation Dropdown */}
           {mobileMenuOpen && (
             <motion.div
               className="md:hidden mt-2 bg-black/60 backdrop-blur-xl border border-white/10 rounded-xl p-6"
@@ -197,11 +206,6 @@ const Index = () => {
                     {link}
                   </a>
                 ))}
-                <Button variant="hero" className="mt-4" asChild>
-                  <a href="#contact" onClick={() => setMobileMenuOpen(false)}>
-                    Get in Touch
-                  </a>
-                </Button>
               </div>
             </motion.div>
           )}
@@ -217,6 +221,7 @@ const Index = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
+          minWidth: "100vw",
         }}
       >
         
